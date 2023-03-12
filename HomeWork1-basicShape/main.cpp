@@ -36,7 +36,7 @@ bool fillPpmFile(std::string file_path)
 	return 0;
 }
 
-void fillRectangle(const uint32_t& rx1, const uint32_t& ry1, const uint32_t& rw, const uint32_t& rh, const uint32_t& color)
+void fillRectangle(const uint32_t rx1, const uint32_t ry1, const uint32_t rw, const uint32_t rh, const uint32_t color)
 {
 	uint32_t rx2 = rx1+rw;
 	uint32_t ry2 = ry1+rh;
@@ -61,7 +61,7 @@ void checkers()
 		}
 	}
 }
-void fillPixelMatrix(const uint32_t& color)
+void fillPixelMatrix(const uint32_t color)
 {
 	for(auto& row : pixelMatrixArray_g){
 		for(auto& pixel : row){
@@ -70,7 +70,7 @@ void fillPixelMatrix(const uint32_t& color)
 	}
 }
 
-void fillCircle(const uint32_t& cx, const uint32_t& cy, const uint32_t& cr, const uint32_t& color)
+void fillCircle(const uint32_t cx, const uint32_t cy, const uint32_t cr, const uint32_t color)
 {
 	uint32_t x1 = (cr < cx) ? cx - cr : 0;
 	uint32_t x2 = cx + cr;

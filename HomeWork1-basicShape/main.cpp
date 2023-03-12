@@ -9,6 +9,13 @@ const uint32_t pixelMatrixWidth_g = 600;
 
 std::array<std::array<uint32_t, pixelMatrixWidth_g>, pixelMatrixHight_g> pixelMatrixArray_g;
 
+namespace MyUtils {
+  template<typename T>
+  T diff(const T&a, const T&b) {
+    return (a > b) ? (a - b) : (b - a);
+  }
+}
+
 bool fillPpmFile(std::string file_path)
 {
 	std::ofstream ppm_file;
@@ -72,10 +79,10 @@ void fillCircle(uint32_t cx, uint32_t cy, uint32_t cr, uint32_t color)
 	uint32_t dx, dy;
 	for(uint32_t xi = x1; xi <= x2; ++xi){
 		if (xi >= pixelMatrixWidth_g) break;
-		dx = abs(cx-xi);
+		dx = MyUtils::diff(cx, xi);
 		for(uint32_t yi = y1; yi <= y2; ++yi){
 			if (yi >= pixelMatrixHight_g) break;
-			dy = abs(cy-yi);
+			dy = MyUtils::diff(cy, yi);
 			if( dx*dx + dy*dy <= cr*cr){
 				pixelMatrixArray_g[yi][xi] = color;
 			}

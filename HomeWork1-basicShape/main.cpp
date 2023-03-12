@@ -29,10 +29,10 @@ bool fillPpmFile(std::string file_path)
 	return 0;
 }
 
-void fillRectangle(uint32_t& rx1, uint32_t& ry1, uint32_t& rw, uint32_t& rh, uint32_t& color)
+void fillRectangle(uint32_t rx1, uint32_t ry1, uint32_t rw, uint32_t rh, uint32_t color)
 {
 	uint32_t rx2 = rx1+rw;
-	uint32_t ry2 = ry2+rh;
+	uint32_t ry2 = ry1+rh;
 	if( (ry2> pixelMatrixHight_g) || (rx2 > pixelMatrixWidth_g) ) return;
 	for(uint32_t y = ry1; y < ry2; ++y){
 		for(uint32_t x = rx1; x < rx2; ++x){
@@ -50,7 +50,7 @@ void checkers()
 	for (uint32_t y = 0; y < pixelMatrixHight_g; y+=rectangle_hight){
 		for(uint32_t x = 0; x < pixelMatrixWidth_g; x+=rectangle_width){
 			fillRectangle(x, y, rectangle_width, rectangle_hight, color);
-			color = rand() % 0xffffff;
+			color = rand() % 0x1000000;
 		}
 	}
 }
@@ -63,8 +63,32 @@ void fillPixelMatrix(uint32_t color)
 	}
 }
 
+void fillCircle(uint32_t cx, uint32_t cy, uint32_t cr, uint32_t color)
+{
+	uint32_t x1 = (cr < cx) ? cx - cr : 0;
+	uint32_t x2 = cx + cr;
+	uint32_t y1 = (cr < cy) ? cy - cr : 0;
+	uint32_t y2 = cy + cr; 
+	uint32_t dx, dy;
+	for(uint32_t xi = x1; xi <= x2; ++xi){
+		if (xi >= pixelMatrixWidth_g) break;
+		dx = abs(cx-xi);
+		for(uint32_t yi = y1; yi <= y2; ++yi){
+			if (yi >= pixelMatrixHight_g) break;
+			dy = abs(cy-yi);
+			if( dx*dx + dy*dy <= cr*cr){
+				pixelMatrixArray_g[yi][xi] = color;
+			}
+		}
+	}
+}
+
 int main()
 {
 	checkers();
-	return fillPpmFile("./sample.ppm");
+	fillPpmFile("./checkers.ppm");
+	fillPixelMatrix(0xffffff);
+	fillCircle(pixelMatrixWidth_g/2, pixelMatrixHight_g/2, pixelMatrixHight_g/8, 0xff0000);
+	fillPpmFile("./circle.ppm");
+	return 0;
 }

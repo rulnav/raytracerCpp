@@ -18,6 +18,5 @@ int main()
 {
 	PixelMatrix window(pixelMatrixWidth_g, pixelMatrixHight_g);
     window.fillPixelMatrix(0xff0000);
-	window.fillPpmFile("./vectornormalization.ppm");
-	return 0;
+    return window.fillPpmFile("./vectornormalization.ppm");
 }

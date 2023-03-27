@@ -16,6 +16,7 @@ namespace MyUtils {
 struct Color {
   uint8_t red, green, blue;  
 
+  Color() : red{0}, green {0}, blue{0} {}
   Color(const uint8_t inRed, const uint8_t inGreen, const uint8_t inBlue) :
     red{inRed}, green{inGreen}, blue{inBlue} {}
   Color(const uint32_t inColor) {

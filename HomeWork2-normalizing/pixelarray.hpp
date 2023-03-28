@@ -36,18 +36,18 @@ public:
 
 class PixelMatrix {
 public:
-    PixelMatrix(const uint32_t hight, const uint32_t width)
-        : pixelMatrixArray(width, std::vector<Pixel>(hight)) {}
+    PixelMatrix(const uint32_t cols, const uint32_t rows)
+        : pixelMatrixArray(rows, std::vector<Pixel>(cols)) {}
 
     uint32_t getHight() const { return pixelMatrixArray.size(); }
     uint32_t getWidth() const { return pixelMatrixArray.empty() ? 0 : pixelMatrixArray[0].size(); }
 
-    Pixel getPixel(const uint32_t x, const uint32_t y) const {
-        return pixelMatrixArray[x][y];
+    Pixel getPixel(const uint32_t col, const uint32_t row) const {
+        return pixelMatrixArray[row][col];
     }
 
-    void setPixel(const uint32_t x, const uint32_t y, const Pixel &color) {
-        pixelMatrixArray[x][y] = color;
+    void setPixel(const uint32_t col, const uint32_t row, const Pixel &color) {
+        pixelMatrixArray[row][col] = color;
     }
 
     bool fillPpmFile(std::string file_path) const {
@@ -57,8 +57,8 @@ public:
         ppm_file<<"P3\n";
         ppm_file<<getWidth()<<" "<<getHight()<<'\n';
         ppm_file<<0xFF<<'\n';
-        for(auto& col : pixelMatrixArray){
-            for(auto& pixel : col){
+        for(auto& row : pixelMatrixArray){
+            for(auto& pixel : row ){
                 ppm_file<<pixel<<' ';
             }
             ppm_file << '\n';
@@ -68,39 +68,9 @@ public:
     }
 
     void fillPixelMatrix(const Pixel &color){
-        for(auto& col : pixelMatrixArray){
-            for(auto& pixel : col){
+        for(auto& row : pixelMatrixArray){
+            for(auto& pixel : row){
                 pixel = color;
-            }
-        }
-    }
-
-    void fillRectangle(const uint32_t rx1, const uint32_t ry1, const uint32_t rw, const uint32_t rh, const Pixel &color) {
-        uint32_t rx2 = rx1+rw;
-        uint32_t ry2 = ry1+rh;
-        if( (ry2> getHight()) || (rx2 > getWidth()) ) return;
-        for(uint32_t y = ry1; y < ry2; ++y){
-            for(uint32_t x = rx1; x < rx2; ++x){
-                setPixel(x, y, color);
-            }
-        }
-    }
-
-    void fillCircle(const uint32_t cx, const uint32_t cy, const uint32_t cr, const Pixel &color) {
-        uint32_t x1 = (cr < cx) ? cx - cr : 0;
-        uint32_t x2 = cx + cr;
-        uint32_t y1 = (cr < cy) ? cy - cr : 0;
-        uint32_t y2 = cy + cr;
-        uint32_t dx, dy;
-        for(uint32_t xi = x1; xi <= x2; ++xi){
-            if (xi >= getWidth()) break;
-            dx = MyUtils::diff(cx, xi);
-            for(uint32_t yi = y1; yi <= y2; ++yi){
-                if (yi >= getHight()) break;
-                dy = MyUtils::diff(cy, yi);
-                if( dx*dx + dy*dy <= cr*cr){
-                    setPixel(xi, yi, color);
-                }
             }
         }
     }

@@ -1,3 +1,0 @@
-/home/dean/gitprojects/graphics/raytracingCourse/HomeWork2-normalizing/build/CMakeFiles/main.dir
-/home/dean/gitprojects/graphics/raytracingCourse/HomeWork2-normalizing/build/CMakeFiles/edit_cache.dir
-/home/dean/gitprojects/graphics/raytracingCourse/HomeWork2-normalizing/build/CMakeFiles/rebuild_cache.dir

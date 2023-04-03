@@ -6,7 +6,6 @@
 #include "vectorclass.hpp"
 #include "pixelarray.hpp"
 
-using namespace::VectorNamespace;
 //#define VECTOR_ARRAY_TYPE std::vector<std::vector<VectorF>>
 
 

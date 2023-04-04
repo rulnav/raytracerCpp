@@ -4,27 +4,37 @@
 #include "vectorclass.hpp"
 
 template<typename T>
-class Triangle3D : public Vector3D<T>
+class Triangle3 : public MyVec::Vector3<T>
 {
 public:
+    //triangle vertexs
+    MyVec::Vector3<T> vertex1;
+    MyVec::Vector3<T> vertex2;
+    MyVec::Vector3<T> vertex3;
     //constructors
-    Triangle3D() : point1(), point2(), point3() {};
-    Triangle3D(const Vector3D<T> &p1, const Vector3D<T> &p2, const Vector3D<T> &p3) : point1(p1), point2(p2), point3(p3) {};
+    Triangle3() : vertex1(), vertex2(), vertex3(), edge1(), edge2() {};
+    Triangle3(const MyVec::Vector3<T> &p1, const MyVec::Vector3<T> &p2, const MyVec::Vector3<T> &p3) : vertex1(p1), vertex2(p2), vertex3(p3) {
+        calculateEdges();
+    }
+    //properties
+    T area(){
+        return faceBetween(edge1, edge2);
+    }
 
-    //set methods
-    void setPoint1(Vector3D<T> p1) { point1(p1); }
-    void setPoint2(Vector3D<T> p2) { point2(p2); }
-    void setPoint3(Vector3D<T> p3) { point3(p3); }
+    MyVec::Vector3<T> normalVector(){
+        return MyVec::crossProduct(edge1, edge2);
+    }
 
-    //get methods
-    T getPoint1() { return point1; }
-    T getPoint2() { return point2; }
-    T setPoint3() { return point3; }
 private:
-    Vector3D<T> point1;
-    Vector3D<T> point2;
-    Vector3D<T> point3;
+    //triangle edges
+    MyVec::Vector3<T> edge1;
+    MyVec::Vector3<T> edge2;
+
+    void calculateEdges(){
+        edge1 = vertex2 - vertex1;
+        edge2 = vertex3 - vertex1;
+    }
 };
 
-using TriangleF = Triangle3D<float>;
+using Triangle3f = Triangle3<float>;
 #endif // TRIANGLE_HPP

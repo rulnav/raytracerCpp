@@ -16,7 +16,7 @@ namespace MyVec{
         Vector3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
 
         //vector arithmetics, which should be member functions
-        T length(){
+        T length() const{
             return sqrt(x*x + y*y + z*z);
         }
 

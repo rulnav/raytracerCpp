@@ -17,11 +17,11 @@ public:
         calculateEdges();
     }
     //properties
-    T area(){
-        return faceBetween(edge1, edge2);
+    T area() const{
+        return MyVec::faceBetween(edge1, edge2);
     }
 
-    MyVec::Vector3<T> normalVector(){
+    MyVec::Vector3<T> normalVector() const{
         return MyVec::crossProduct(edge1, edge2);
     }
 

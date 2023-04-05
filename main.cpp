@@ -5,6 +5,7 @@
 #include <iostream>
 #include "vectorclass.hpp"
 #include "pixelarray.hpp"
+#include "triangleclass.hpp"
 
 //#define VECTOR_ARRAY_TYPE std::vector<std::vector<VectorF>>
 
@@ -46,6 +47,12 @@ void printArea(MyVec::Vector3f A, MyVec::Vector3f B){
     MyVec::Vector3f newVec = 2*MyVec::faceBetween(A, B);
     printf("Parallelogram area: {%f, %f, %f}\n", newVec.x, newVec.y, newVec.z);
 }
+void printTriangleProperties(Triangle3f triangle){
+    MyVec::Vector3f normalVector = triangle.normalVector();
+    float area = triangle.area();
+    printf("normal Vector of triangle: {%f, %f, %f}\n", normalVector.x, normalVector.y, normalVector.z);
+    printf("area of triangle: %f\n", area);
+}
 
 int main()
 {
@@ -61,5 +68,9 @@ int main()
     printCrossProduct({3, -3, 1}, {4, 9, 3});
     printArea({3, -3, 1}, {4, 9, 3});
     printArea({3, -3, 1}, {-12, 12, -4});
+    printf("\n====Task3====\n");
+    printTriangleProperties({{-1.75, -1.75, -3},{1.75, -1.75, -3},{0,1.75,-3}});
+    printTriangleProperties({{0, 0, -1},{1, 0, 1},{-1, 0 ,1}});
+    printTriangleProperties({{0.56, 1.11, 1.23},{0.44, -2.368, -0.54},{-1.56, 0.15, -1.92}});
     return 0;
 }

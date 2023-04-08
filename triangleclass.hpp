@@ -4,31 +4,31 @@
 #include "vectorclass.hpp"
 
 template<typename T>
-class Triangle3 : public MyVec::Vector3<T>
+class Triangle3 : public Vector3<T>
 {
 public:
     //triangle vertexs
-    MyVec::Vector3<T> vertex1;
-    MyVec::Vector3<T> vertex2;
-    MyVec::Vector3<T> vertex3;
+    Vector3<T> vertex1;
+    Vector3<T> vertex2;
+    Vector3<T> vertex3;
     //constructors
     Triangle3() : vertex1(), vertex2(), vertex3(), edge1(), edge2() {};
-    Triangle3(const MyVec::Vector3<T> &p1, const MyVec::Vector3<T> &p2, const MyVec::Vector3<T> &p3) : vertex1(p1), vertex2(p2), vertex3(p3) {
+    Triangle3(const Vector3<T> &p1, const Vector3<T> &p2, const Vector3<T> &p3) : vertex1(p1), vertex2(p2), vertex3(p3) {
         calculateEdges();
     }
     //properties
     T area() const{
-        return MyVec::faceBetween(edge1, edge2);
+        return crossProduct(edge1, edge2).length() / 2;
     }
 
-    MyVec::Vector3<T> normalVector() const{
-        return MyVec::crossProduct(edge1, edge2);
+    Vector3<T> normalVector() const{
+        return crossProduct(edge1, edge2);
     }
 
 private:
     //triangle edges
-    MyVec::Vector3<T> edge1;
-    MyVec::Vector3<T> edge2;
+    Vector3<T> edge1;
+    Vector3<T> edge2;
 
     void calculateEdges(){
         edge1 = vertex2 - vertex1;

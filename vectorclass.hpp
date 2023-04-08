@@ -2,7 +2,7 @@
 #define VECTOR_HPP
 
 #include<math.h>
-namespace MyVec{
+/*namespace MyVec*/
     template<typename T>
     class Vector3
     {
@@ -28,17 +28,8 @@ namespace MyVec{
     //more arithmetics, as free functions
     template<typename T>
     Vector3<T> crossProduct(const Vector3<T>& vec1, const Vector3<T>& vec2) {
+        //cross product is a vector, perpendicular to the two input vectors, and with length equal to the parallelogram they lock between eachother
         return Vector3<T>(vec1.y*vec2.z - vec1.z*vec2.y, vec1.z*vec2.x - vec1.x*vec2.z, vec1.x*vec2.y - vec1.y*vec2.x);
-    }
-
-    template<typename T>
-    T faceBetween(const Vector3<T>& vec1, const Vector3<T>& vec2){
-        //Heron's formula, to find the area of the triangle (multiply by 2, to get the area of the parallelogram)
-        T side1 = vec1.length();
-        T side2 = vec2.length();
-        T side3 = (vec1 - vec2).length();
-        T halfPerimeter = (side1 + side2 + side3)/2;
-        return sqrt(halfPerimeter*(halfPerimeter - side1)*(halfPerimeter - side2)*(halfPerimeter - side3));
     }
 
     //overloads
@@ -51,5 +42,5 @@ namespace MyVec{
     Vector3<T> operator-(const Vector3<T>& vec1, const Vector3<T>& vec2){
         return Vector3<T>(vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z);
     }
-}
+
 #endif

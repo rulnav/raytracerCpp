@@ -7,13 +7,10 @@
 #include "pixelarray.hpp"
 #include "triangleclass.hpp"
 
-//#define VECTOR_ARRAY_TYPE std::vector<std::vector<VectorF>>
-
-
 const uint32_t pixelMatrixHight_g = 400;
 const uint32_t pixelMatrixWidth_g = 600;
 
-void normalizeRays(std::vector<std::vector<MyVec::Vector3f>>& vectorArray, PixelMatrix& window)
+void normalizeRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window)
 {
     uint32_t width = window.getWidth();
     uint32_t hight = window.getHight();
@@ -30,7 +27,7 @@ void normalizeRays(std::vector<std::vector<MyVec::Vector3f>>& vectorArray, Pixel
     for(uint32_t x = 0; x < width; ++x){
         for(uint32_t y = 0; y < hight; ++y){
 
-            MyVec::Vector3f vec(normalizeX(x, width), normalizeY(y, hight), -1.0);
+            Vector3f vec(normalizeX(x, width), normalizeY(y, hight), -1.0);
             window.setPixel(x,y,Pixel(std::abs(vec.x * multiplier),
                                       std::abs(vec.y * multiplier),
                                       0x77));
@@ -39,16 +36,16 @@ void normalizeRays(std::vector<std::vector<MyVec::Vector3f>>& vectorArray, Pixel
     }
 }
 
-void printCrossProduct(MyVec::Vector3f A, MyVec::Vector3f B){
-    MyVec::Vector3f newVec = MyVec::crossProduct(A, B);
+void printCrossProduct(Vector3f A, Vector3f B){
+    Vector3f newVec = crossProduct(A, B);
     printf("Cross product: {%f, %f, %f}\n", newVec.x, newVec.y, newVec.z);
 }
-void printArea(MyVec::Vector3f A, MyVec::Vector3f B){
-    MyVec::Vector3f newVec = 2*MyVec::faceBetween(A, B);
-    printf("Parallelogram area: {%f, %f, %f}\n", newVec.x, newVec.y, newVec.z);
+void printArea(Vector3f A, Vector3f B){
+    float area = crossProduct(A, B).length();
+    printf("Parallelogram area: %f\n", area);
 }
 void printTriangleProperties(Triangle3f triangle){
-    MyVec::Vector3f normalVector = triangle.normalVector();
+    Vector3f normalVector = triangle.normalVector();
     float area = triangle.area();
     printf("normal Vector of triangle: {%f, %f, %f}\n", normalVector.x, normalVector.y, normalVector.z);
     printf("area of triangle: %f\n", area);
@@ -56,8 +53,8 @@ void printTriangleProperties(Triangle3f triangle){
 
 int main()
 {
-    std::vector<std::vector<MyVec::Vector3f>> vectorArray
-            (pixelMatrixWidth_g, std::vector<MyVec::Vector3f>(pixelMatrixHight_g));
+    std::vector<std::vector<Vector3f>> vectorArray
+            (pixelMatrixWidth_g, std::vector<Vector3f>(pixelMatrixHight_g));
 	PixelMatrix window(pixelMatrixWidth_g, pixelMatrixHight_g);
     window.fillPixelMatrix(0xff0000);
     normalizeRays(vectorArray, window);

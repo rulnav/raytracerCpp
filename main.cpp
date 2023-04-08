@@ -41,7 +41,7 @@ void printCrossProduct(Vector3f A, Vector3f B){
     printf("Cross product: {%f, %f, %f}\n", newVec.x, newVec.y, newVec.z);
 }
 void printArea(Vector3f A, Vector3f B){
-    float area = crossProduct(A, B).length();
+    float area = crossProduct(A, B).calculateLength();
     printf("Parallelogram area: %f\n", area);
 }
 void printTriangleProperties(Triangle3f triangle){

@@ -27,9 +27,13 @@ public:
         return normalOfPlane;
     }
 
-    Vector3<T> rayFromOriginToPointInPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
+    Vector3<T> rayFromOriginToPointOnPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
         T dirRayLen = dirRay.calculateLength();
         return origin + Vector3<T>( dirRay * Vector3<T>(dirRayLen * vertex1.z / dirRay.z));
+    }
+
+    Vector3<T> rayFromVerticieToPointOnPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
+        return rayFromOriginToPointOnPlane(origin, dirRay) - vertex1;
     }
 
 private:

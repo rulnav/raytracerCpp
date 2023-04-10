@@ -46,7 +46,10 @@ void renderTriangle(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix
             if(dotProduct(-normalOfTrianglePlane, vectorArray[i][j]) <= 0){
                 continue;
             }
-            Vector3f newVec = triangle.rayFromOriginToPointInPlane(Vector3f(0.0,0.0,0.0),
+            Vector3f newVec = triangle.rayFromOriginToPointOnPlane(Vector3f(0.0,0.0,0.0),
+                                                                   vectorArray[i][j]);
+//            printf("{%f, %f, %f} ", newVec.x, newVec.y, newVec.z);
+            newVec = triangle.rayFromVerticieToPointOnPlane(Vector3f(0.0,0.0,0.0),
                                                                    vectorArray[i][j]);
             printf("{%f, %f, %f} ", newVec.x, newVec.y, newVec.z);
         }

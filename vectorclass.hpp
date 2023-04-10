@@ -19,6 +19,22 @@ public:
         return sqrt(x*x + y*y + z*z);
     }
 
+    Vector3<T> normalize() {
+        T len = calculateLength();
+        x = x/len;
+        y = y/len;
+        z = z/len;
+        return this;
+    }
+
+    //overloads
+    Vector3<T> operator+(const Vector3<T>& vec2){
+        return Vector3<T>(this->x + vec2.x, this->y + vec2.y, this->z + vec2.z);
+    }
+
+    Vector3<T> operator-(const Vector3<T>& vec2){
+        return Vector3<T>(this->x - vec2.x, this->y - vec2.y, this->z - vec2.z);
+    }
 private:
 };
 
@@ -32,7 +48,7 @@ Vector3<T> crossProduct(const Vector3<T>& vec1, const Vector3<T>& vec2) {
 }
 
 template<typename T>
-Vector3<T> turnToNormal(Vector3<T> vec) {
+Vector3<T> normal(Vector3<T> vec) {
     T len = vec.calculateLength();
     vec.x = vec.x/len;
     vec.y = vec.y/len;
@@ -56,4 +72,8 @@ Vector3<T> operator-(const Vector3<T>& vec1, const Vector3<T>& vec2){
     return Vector3<T>(vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z);
 }
 
+template<typename T>
+Vector3<T> operator*(const Vector3<T>& vec1, const Vector3<T>& vec2){
+    return Vector3<T>(vec1.x * vec2.x, vec1.y * vec2.y, vec1.z * vec2.z);
+}
 #endif

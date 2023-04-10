@@ -7,67 +7,59 @@
 #include "pixelarray.hpp"
 #include "triangleclass.hpp"
 
-const uint32_t pixelMatrixHight_g = 400;
-const uint32_t pixelMatrixWidth_g = 600;
+const uint32_t pixelMatrixHight_g = 4;
+const uint32_t pixelMatrixWidth_g = 6;
 
-void normalizeRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window)
+void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window)
 {
     uint32_t width = window.getWidth();
     uint32_t hight = window.getHight();
     float multiplier = 255.0;
 
-    auto normalizeX = [](uint32_t x, uint32_t width) {
+    auto centerX= [](uint32_t x, uint32_t width) {
         return ( 2.0 * ((x+0.5) / width) - 1.0 );
     };
 
-    auto normalizeY = [](uint32_t y, uint32_t hight) {
+    auto centerY= [](uint32_t y, uint32_t hight) {
         return ( 1.0 - ((y+0.5) / hight) * 2.0 );
     };
 
     for(uint32_t x = 0; x < width; ++x){
         for(uint32_t y = 0; y < hight; ++y){
 
-            Vector3f vec(normalizeX(x, width), normalizeY(y, hight), -1.0);
+            Vector3f vec(centerX(x, width), centerY(y, hight), -1.0);
             window.setPixel(x,y,Pixel(std::abs(vec.x * multiplier),
                                       std::abs(vec.y * multiplier),
                                       0x77));
-            vectorArray[x][y] = vec;
+            vectorArray[y][x] = normal(vec);
         }
     }
 }
 
-void printCrossProduct(Vector3f A, Vector3f B){
-    Vector3f newVec = crossProduct(A, B);
-    printf("Cross product: {%f, %f, %f}\n", newVec.x, newVec.y, newVec.z);
-}
-void printArea(Vector3f A, Vector3f B){
-    float area = crossProduct(A, B).calculateLength();
-    printf("Parallelogram area: %f\n", area);
-}
-void printTriangleProperties(Triangle3f triangle){
-    Vector3f normalVector = triangle.normalVector();
-    float area = triangle.area();
-    printf("normal Vector of triangle: {%f, %f, %f}\n", normalVector.x, normalVector.y, normalVector.z);
-    printf("area of triangle: %f\n", area);
+void renderTriangle(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window, const Triangle3f& triangle){
+    uint32_t width = window.getWidth();
+    uint32_t hight = window.getHight();
+
+    for(uint32_t i = 0; i < hight; ++i){
+        for(uint32_t j = 0; j < width; ++j){
+            Vector3f newVec = triangle.rayFromOriginToPointInPlane(Vector3f(0.0,0.0,0.0),
+                                                                   vectorArray[i][j]);
+            printf("{%f, %f, %f} ", newVec.x, newVec.y, newVec.z);
+        }
+        printf("\n");
+    }
 }
 
 int main()
 {
     std::vector<std::vector<Vector3f>> vectorArray
-            (pixelMatrixWidth_g, std::vector<Vector3f>(pixelMatrixHight_g));
+            (pixelMatrixHight_g, std::vector<Vector3f>(pixelMatrixWidth_g));
 	PixelMatrix window(pixelMatrixWidth_g, pixelMatrixHight_g);
     window.fillPixelMatrix(0xff0000);
-    normalizeRays(vectorArray, window);
+    projectRays(vectorArray, window);
     window.fillPpmFile("./vectornormalization.ppm");
 
-    printf("\n====Task2====\n");
-    printCrossProduct({3.5, 0, 0}, {1.75, 3.5, 0});
-    printCrossProduct({3, -3, 1}, {4, 9, 3});
-    printArea({3, -3, 1}, {4, 9, 3});
-    printArea({3, -3, 1}, {-12, 12, -4});
-    printf("\n====Task3====\n");
-    printTriangleProperties({{-1.75, -1.75, -3},{1.75, -1.75, -3},{0,1.75,-3}});
-    printTriangleProperties({{0, 0, -1},{1, 0, 1},{-1, 0 ,1}});
-    printTriangleProperties({{0.56, 1.11, 1.23},{0.44, -2.368, -0.54},{-1.56, 0.15, -1.92}});
+    renderTriangle(vectorArray, window, {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}});
+
     return 0;
 }

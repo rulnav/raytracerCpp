@@ -36,12 +36,16 @@ void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& w
     }
 }
 
-void renderTriangle(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window, const Triangle3f& triangle){
+void renderTriangle(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window, Triangle3f triangle){
     uint32_t width = window.getWidth();
     uint32_t hight = window.getHight();
-
+    Vector3f normalOfTrianglePlane = normal(triangle.calculateNormalOfPlane());
+//    printf("{%f, %f, %f}\n\n ", normalOfTrianglePlane.x, normalOfTrianglePlane.y, normalOfTrianglePlane.z);
     for(uint32_t i = 0; i < hight; ++i){
         for(uint32_t j = 0; j < width; ++j){
+            if(dotProduct(-normalOfTrianglePlane, vectorArray[i][j]) <= 0){
+                continue;
+            }
             Vector3f newVec = triangle.rayFromOriginToPointInPlane(Vector3f(0.0,0.0,0.0),
                                                                    vectorArray[i][j]);
             printf("{%f, %f, %f} ", newVec.x, newVec.y, newVec.z);

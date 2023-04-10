@@ -15,14 +15,16 @@ public:
     Triangle3() : vertex1(), vertex2(), vertex3(), edge1(), edge2(), edge3() {};
     Triangle3(const Vector3<T> &p1, const Vector3<T> &p2, const Vector3<T> &p3) : vertex1(p1), vertex2(p2), vertex3(p3) {
         calculateEdges();
+        calculateNormalOfPlane();
     }
     //properties
     T area() const{
-        return normalVector().calculateLength() / 2;
+        return calculateNormalOfPlane().calculateLength() / 2;
     }
 
-    Vector3<T> normalVector() const{
-        return crossProduct(edge1, Vector3<T>(0) - edge3);
+    Vector3<T> calculateNormalOfPlane() {
+        normalOfPlane = crossProduct(edge1, Vector3<T>(0) - edge3);
+        return normalOfPlane;
     }
 
     Vector3<T> rayFromOriginToPointInPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
@@ -35,6 +37,7 @@ private:
     Vector3<T> edge1;
     Vector3<T> edge2;
     Vector3<T> edge3;
+    Vector3<T> normalOfPlane;
 
     void calculateEdges(){
         edge1 = vertex2 - vertex1;

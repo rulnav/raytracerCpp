@@ -23,17 +23,35 @@ public:
     }
 
     Vector3<T> calculateNormalOfPlane() {
-        normalOfPlane = crossProduct(edge1, Vector3<T>(0) - edge3);
+        normalOfPlane = crossProduct(edge1, Vector3<T>(0) - edge3).normalize();
         return normalOfPlane;
     }
 
-    Vector3<T> rayFromOriginToPointOnPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
-        T dirRayLen = dirRay.calculateLength();
-        return origin + Vector3<T>( dirRay * Vector3<T>(dirRayLen * vertex1.z / dirRay.z));
-    }
-
-    Vector3<T> rayFromVerticieToPointOnPlane(const Vector3<T>& origin, const Vector3<T>& dirRay) const{
-        return rayFromOriginToPointOnPlane(origin, dirRay) - vertex1;
+    bool rayIntersectsTriangle(const Vector3<T>& rayOrigin, const Vector3<T>& rayDirection) const{
+        //check if ray is parallel to triangle
+        if(dotProduct(normalOfPlane, rayDirection) == 0){
+            return false;
+        }
+        //check if ray hits the triangle's plane from the front
+        T distanceFromOriginToPlane = dotProduct(normalOfPlane, vertex1);
+        if(distanceFromOriginToPlane >= 0){
+            return false;
+        }
+        int dirRayLen = 1;  //rayDirection.calculateLength(); //should be one
+        Vector3<T> intersectingRay =  rayOrigin + Vector3<T>( rayDirection * Vector3<T>(dirRayLen * distanceFromOriginToPlane / rayDirection.z));
+        Vector3<T> v1ToIntersectionPoint = intersectingRay - vertex1;
+        if(dotProduct(normalOfPlane, crossProduct(edge1, v1ToIntersectionPoint)) <= 0){
+            return false;
+        }
+        Vector3<T> v2ToIntersectionPoint = intersectingRay - vertex2;
+        if(dotProduct(normalOfPlane, crossProduct(edge2, v2ToIntersectionPoint)) <= 0){
+            return false;
+        }
+        Vector3<T> v3ToIntersectionPoint = intersectingRay - vertex3;
+        if(dotProduct(normalOfPlane, crossProduct(edge3, v3ToIntersectionPoint)) <= 0){
+            return false;
+        }
+        return true;
     }
 
 private:

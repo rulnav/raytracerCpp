@@ -19,12 +19,14 @@ public:
         return sqrt(x*x + y*y + z*z);
     }
 
-    Vector3<T> normalize() {
+    Vector3<T>& normalize() {
         T len = calculateLength();
-        x = x/len;
-        y = y/len;
-        z = z/len;
-        return this;
+        if(len > 0){
+            x = x/len;
+            y = y/len;
+            z = z/len;
+        }
+        return *this;
     }
 
     //overloads
@@ -52,7 +54,7 @@ Vector3<T> crossProduct(const Vector3<T>& vec1, const Vector3<T>& vec2) {
 }
 
 template<typename T>
-Vector3<T> normal(Vector3<T> vec) {
+Vector3<T> getNormalCopy(Vector3<T> vec) {
     T len = vec.calculateLength();
     vec.x = vec.x/len;
     vec.y = vec.y/len;

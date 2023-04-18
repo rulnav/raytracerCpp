@@ -16,7 +16,6 @@ public:
     Triangle3(const Vector3<T> &p1, const Vector3<T> &p2, const Vector3<T> &p3) : vertex1(p1), vertex2(p2), vertex3(p3) {
         calculateEdges();
         calculateNormalOfPlane();
-        calculateDistanceFromVertexOriginToPlane();
     }
     //properties
     T area() const{
@@ -27,7 +26,7 @@ public:
         //check if ray is parallel to triangle
         if(dotProduct(normalOfPlane, rayDirection) == 0)  return false;
         //check if ray hits the triangle's plane from the front
-        if(distanceFromOriginToPlane >= 0)   return false;
+        T distanceFromOriginToPlane = calculateDistanceFromVertexOriginToPlane(rayOrigin);        if(distanceFromOriginToPlane >= 0)   return false;
         int dirRayLen = 1;  //rayDirection.calculateLength(); //should be one, if we assume rayDirection is normalized
         Vector3<T> intersectingRay =  rayOrigin + Vector3<T>( rayDirection * Vector3<T>(dirRayLen * distanceFromOriginToPlane / dotProduct(rayDirection, normalOfPlane)) );
         Vector3<T> v1ToIntersectionPoint = intersectingRay - vertex1;
@@ -45,9 +44,8 @@ public:
         return true;
     }
 
-//getters
-    T getDistanceFromVertexOriginToPlane() const {
-        return distanceFromOriginToPlane;
+    T calculateDistanceFromVertexOriginToPlane(const Vector3<T>& rayOrigin) const{
+        return dotProduct(normalOfPlane, vertex1 - rayOrigin);
     }
 
 private:
@@ -56,7 +54,6 @@ private:
     Vector3<T> edge2;
     Vector3<T> edge3;
     Vector3<T> normalOfPlane;
-    T distanceFromOriginToPlane ; //vertex1 and the plane's normal should have the same origin
 
     void calculateEdges(){
         edge1 = vertex2 - vertex1;
@@ -69,9 +66,6 @@ private:
         return normalOfPlane;
     }
 
-    T calculateDistanceFromVertexOriginToPlane(){
-        return distanceFromOriginToPlane = dotProduct(normalOfPlane, vertex1);
-    }
 };
 
 using Triangle3f = Triangle3<float>;

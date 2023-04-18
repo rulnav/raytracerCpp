@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <cstdint>
 #include<math.h>
 template<typename T>
 class Vector3
@@ -41,6 +42,7 @@ public:
     Vector3<T> operator-() const{
         return Vector3<T>(-x, -y, -z);
     }
+
 private:
 };
 

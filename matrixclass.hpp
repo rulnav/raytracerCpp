@@ -29,9 +29,9 @@ public:
     // overloads
     Vector3<T> operator * (const Vector3<T>& vec) const{
         return Vector3<T>(
-                vec.x * m[0][0] + vec.x * m[0][1] + vec.x * m[0][2],
-                vec.y * m[1][0] + vec.y * m[1][1] + vec.y * m[1][2],
-                vec.z * m[2][0] + vec.z * m[2][1] + vec.z * m[2][2]);
+                vec.x * m[0][0] + vec.y * m[0][1] + vec.z * m[0][2],
+                vec.x * m[1][0] + vec.y * m[1][1] + vec.z * m[1][2],
+                vec.x * m[2][0] + vec.y * m[2][1] + vec.z * m[2][2]);
     }
 
     const std::array<T,3>& operator [] (uint8_t i) const { return m[i]; }
@@ -57,4 +57,6 @@ Matrix3<T> operator * (const Matrix3<T>& matrix1, const Matrix3<T>& matrix2) {
     }
     return resultMatrix;
 }
+
+using Matrix3f = Matrix3<float>;
 #endif // MATRIXCLASS_HPP

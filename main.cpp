@@ -64,8 +64,12 @@ int main()
     window.fillPixelMatrix(0x00ff00);
     Cameraf debugCamera(origin, Matrix3f ());
     debugCamera.pan(30.0);
-    Vector3f vec(1,1,-1);
-    vec = vec * debugCamera.getRotationMatrix();
+//    Vector3f vec(1,1,-1);
+//    vec = vec * debugCamera.getRotationMatrix();
+//    Cameraf cam1 = {origin, Matrix3f ({{{3,1,2},{2,1,4},{1,2,1}}})};
+//    Cameraf cam2 = {origin, Matrix3f ({{{1.5,1.8,1.9},{0.5,1,2.5},{3.33,0,11}}})};
+//    Matrix3f cam3 = cam1.getRotationMatrix()*cam2.getRotationMatrix();
+//    (void)cam3;
     projectRays(vectorArray, window, debugCamera);
     renderTriangles(vectorArray, window, origin,  { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
     window.fillPpmFile("./triangle1.ppm");

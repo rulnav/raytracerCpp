@@ -33,17 +33,7 @@ public:
                 vec.y * m[1][0] + vec.y * m[1][1] + vec.y * m[1][2],
                 vec.z * m[2][0] + vec.z * m[2][1] + vec.z * m[2][2]);
     }
-    Matrix3<T> operator * (const Matrix3<T>& matrix) const{
-        Matrix3<T> resultMatrix;
-        for (uint8_t i = 0; i < 3; ++i) {
-            for (uint8_t j = 0; j < 3; ++j) {
-                resultMatrix[i][j] = m[i][0] * matrix[0][j] +
-                                     m[i][1] * matrix[1][j] +
-                                     m[i][2] * matrix[2][j] ;
-            }
-        }
-        return resultMatrix;
-    }
+
     const std::array<T,3>& operator [] (uint8_t i) const { return m[i]; }
     std::array<T,3>& operator [] (uint8_t i) { return m[i]; }
 private:

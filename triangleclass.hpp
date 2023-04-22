@@ -26,7 +26,8 @@ public:
         //check if ray is parallel to triangle
         if(dotProduct(normalOfPlane, rayDirection) == 0)  return false;
         //check if ray hits the triangle's plane from the front
-        T distanceFromOriginToPlane = calculateDistanceFromVertexOriginToPlane(rayOrigin);        if(distanceFromOriginToPlane >= 0)   return false;
+        T distanceFromOriginToPlane = calculateDistanceFromVertexOriginToPlane(rayOrigin);
+        if(distanceFromOriginToPlane >= 0)   return false;
         int dirRayLen = 1;  //rayDirection.calculateLength(); //should be one, if we assume rayDirection is normalized
         Vector3<T> intersectingRay =  rayOrigin + Vector3<T>( rayDirection * Vector3<T>(dirRayLen * distanceFromOriginToPlane / dotProduct(rayDirection, normalOfPlane)) );
         Vector3<T> v1ToIntersectionPoint = intersectingRay - vertex1;

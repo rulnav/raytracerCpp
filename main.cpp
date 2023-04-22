@@ -18,7 +18,7 @@ struct TriangleAndColor {
     TriangleAndColor(const Triangle3f& tri, const Pixel&  pix) : triangle(tri), color(pix){};
 };
 
-void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window)
+void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& window, Cameraf& camera)
 {
     uint32_t width = window.getWidth();
     uint32_t hight = window.getHight();
@@ -32,6 +32,7 @@ void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& w
         for(uint32_t y = 0; y < hight; ++y){
 
             Vector3f vec(calcRayX(x, width), calcRayY(y, hight), -1.0);
+            vec = vec * camera.getRotationMatrix();
             vectorArray[y][x] = vec.normalize();
         }
     }
@@ -61,9 +62,11 @@ int main()
     Vector3f origin (0.0,0.0,0.0);
     std::vector<TriangleAndColor> triangleArray;
     window.fillPixelMatrix(0x00ff00);
-    projectRays(vectorArray, window);
     Cameraf debugCamera(origin, Matrix3f ());
     debugCamera.pan(30.0);
+    Vector3f vec(1,1,-1);
+    vec = vec * debugCamera.getRotationMatrix();
+    projectRays(vectorArray, window, debugCamera);
     renderTriangles(vectorArray, window, origin,  { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
     window.fillPpmFile("./triangle1.ppm");
 

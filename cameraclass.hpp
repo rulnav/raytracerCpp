@@ -17,9 +17,12 @@ public:
         T rads = degrees * (M_PI / 180.0);
         rotationMatrix = rotationMatrix * Matrix3<T> (
                     {{{cos(rads) , 0.0 , -sin(rads)},
-                      {0.0		, 1.0 , 0.0		  },
+                      {0.0		 , 1.0 , 0.0	   },
                       {sin(rads) , 0.0 , cos(rads) }}});
     }
+    //getters
+    Matrix3<T> getRotationMatrix(){  return rotationMatrix;  }
+    Vector3<T> getPosition(){  return position;  }
 private:
     //camera position
     Vector3<T> position;

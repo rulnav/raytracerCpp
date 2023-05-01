@@ -30,8 +30,8 @@ void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& w
     };
     for(uint32_t x = 0; x < width; ++x){
         for(uint32_t y = 0; y < hight; ++y){
-
-            Vector3f vec(calcRayX(x, width), calcRayY(y, hight), -1.0);
+            //adjust x to aspect ratio by multiplying it to width/hight
+            Vector3f vec(calcRayX(x, width) * (width/hight), calcRayY(y, hight), -1.0);
             vec = vec * camera.getRotationMatrix();
             vectorArray[y][x] = vec.normalize();
         }
@@ -63,15 +63,21 @@ int main()
     std::vector<TriangleAndColor> triangleArray;
     window.fillPixelMatrix(0x00ff00);
     Cameraf debugCamera(origin, Matrix3f ());
+    debugCamera.truck(Vector3f(0,0,3));
     debugCamera.pan(30.0);
-//    Vector3f vec(1,1,-1);
+    Vector3f vec(1,0,0);
+    Vector3f vec2(0,1,0);
+    Vector3f vec3(0,0,1);
+    vec = vec * debugCamera.getRotationMatrix();
+    vec2 = vec2 * debugCamera.getRotationMatrix();
+    vec3 = vec3 * debugCamera.getRotationMatrix();
 //    vec = vec * debugCamera.getRotationMatrix();
 //    Cameraf cam1 = {origin, Matrix3f ({{{3,1,2},{2,1,4},{1,2,1}}})};
 //    Cameraf cam2 = {origin, Matrix3f ({{{1.5,1.8,1.9},{0.5,1,2.5},{3.33,0,11}}})};
 //    Matrix3f cam3 = cam1.getRotationMatrix()*cam2.getRotationMatrix();
 //    (void)cam3;
     projectRays(vectorArray, window, debugCamera);
-    renderTriangles(vectorArray, window, origin,  { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
+    renderTriangles(vectorArray, window, debugCamera.getPosition(),  { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
     window.fillPpmFile("./triangle1.ppm");
 
     //Hollow pyramid, the green triangle should not be seen

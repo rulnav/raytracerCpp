@@ -14,9 +14,9 @@ public:
     Matrix3() {}
     Matrix3(const std::array<std::array<T,3>,3>& mm) : m(mm) {}
     // initialize the coefficients of the matrix with the coefficients of the identity matrix
-    std::array<std::array<T,3>,3> m = {1,0,0,
-                                       0,1,0,
-                                       0,0,1};
+    std::array<std::array<T,3>,3> m = {{{1,0,0},
+                                        {0,1,0},
+                                        {0,0,1}}};
     // Debug
     void printMatrix(){
         for (uint8_t i = 0; i < 3; ++i) {

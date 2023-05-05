@@ -31,7 +31,7 @@ void projectRays(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatrix& w
     for(uint32_t x = 0; x < width; ++x){
         for(uint32_t y = 0; y < hight; ++y){
             //adjust x to aspect ratio by multiplying it to width/hight
-            Vector3f vec(calcRayX(x, width) * (width/hight), calcRayY(y, hight), -1.0);
+            Vector3f vec(calcRayX(x, width) * ((float)width/hight), calcRayY(y, hight), -1.0);
             vec = vec.normalize() * camera.getRotationMatrix();
             vectorArray[y][x] = vec;
         }
@@ -62,25 +62,28 @@ int main()
     std::vector<TriangleAndColor> triangleArray;
     window.fillPixelMatrix(0x00ff00);
     Cameraf debugCamera(origin, Matrix3f ());
+
+    //tasks 1 and 2
     debugCamera.truck({0,0,3});
-    debugCamera.pan(30.0);
+    debugCamera.pan(15.0);
     projectRays(vectorArray, window, debugCamera);
     renderTriangles(vectorArray, window, debugCamera.getPosition(),  { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
-    window.fillPpmFile("./triangle1.ppm");
+    window.fillPpmFile("./task1&2.ppm");
 
+    //task 3
     //Hollow pyramid, the green triangle should not be seen
-//    triangleArray = {
-//        { { {-2, -1, -3 }, {2, -1, -2.75}, {0, 2, -3.75} }, 0xff0000 },
-//        { { {2, -1, -2.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x990000 },
-//        { { {-2.75, -0.25, -4.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x00ff00 },
-//        { { {-2.75, -0.25, -4.75 }, {-2, -1, -3 }, {0, 2, -3.75} }, 0xff0077 },
-//    };
-//    //sorting, so that the most distanced triangles will be rendered first
-//    std::sort(triangleArray.begin(), triangleArray.end(), [origin](const TriangleAndColor& A, const TriangleAndColor& B){
-//        return ( A.triangle.calculateDistanceFromVertexOriginToPlane(origin ) < B.triangle.calculateDistanceFromVertexOriginToPlane(origin ) );
-//    });
-//    window.fillPixelMatrix(0xffffff);
-//    renderTriangles(vectorArray, window, origin, triangleArray);
-//    window.fillPpmFile("./complexShape.ppm");
+    triangleArray = {
+        { { {-2, -1, -3 }, {2, -1, -2.75}, {0, 2, -3.75} }, 0xff0000 },
+        { { {2, -1, -2.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x990000 },
+        { { {-2.75, -0.25, -4.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x00ff00 },
+        { { {-2.75, -0.25, -4.75 }, {-2, -1, -3 }, {0, 2, -3.75} }, 0xff0077 },
+    };
+    //sorting, so that the most distanced triangles will be rendered first
+    std::sort(triangleArray.begin(), triangleArray.end(), [origin](const TriangleAndColor& A, const TriangleAndColor& B){
+        return ( A.triangle.calculateDistanceFromVertexOriginToPlane(origin ) < B.triangle.calculateDistanceFromVertexOriginToPlane(origin ) );
+    });
+    window.fillPixelMatrix(0xffffff);
+    renderTriangles(vectorArray, window, origin, triangleArray);
+    window.fillPpmFile("./complexShape.ppm");
     return 0;
 }

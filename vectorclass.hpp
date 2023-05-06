@@ -2,7 +2,8 @@
 #define VECTOR_HPP
 
 #include <cstdint>
-#include<math.h>
+#include <math.h>
+
 template<typename T>
 class Vector3
 {
@@ -31,24 +32,25 @@ public:
     }
 
     //overloads
-    Vector3<T>& operator+=(const Vector3<T>& vec2){
+    const Vector3<T>& operator+=(const Vector3<T>& vec2){
         x += vec2.x,  y += vec2.y,  z += vec2.z;
         return this;
     }
 
-    Vector3<T>& operator-=(const Vector3<T>& vec2){
+    const Vector3<T>& operator-=(const Vector3<T>& vec2){
         x -= vec2.x,  y -= vec2.y,  z -= vec2.z;
-        return this;
+        return *this;
     }
 
     Vector3<T> operator-() const{
         return Vector3<T>(-x, -y, -z);
     }
 
-    Vector3<T>& operator *= (const Vector3<T>& vec2){
+    const Vector3<T>& operator*= (const Vector3<T>& vec2){
         x *= vec2.x,  y *= vec2.y,  z *= vec2.z;
-        return this;
+        return *this;
     }
+
 private:
 };
 

@@ -54,14 +54,12 @@ void renderTriangles(std::vector<std::vector<Vector3f>>& vectorArray, PixelMatri
     }
 }
 
-void repositionRays(std::vector<std::vector<Vector3f>>& vectorArray, Cameraf& camera)
-{
-    for(auto &elem : vectorArray){
-        for(auto &vec : elem){
-            vec *= camera.getRotationMatrix();
-            vec.normalize();
-        }
-    }
+
+//func to calculate rotation parameters, input distance r, that you want to keep, and angle that you want to spin. 
+//output the distance you need to move
+//Note: you get and insert absolute units
+float calcMovement(const float& r, const float& angleRad){
+    return (r*sin(angleRad/2)*2);
 }
 
 int main()
@@ -83,20 +81,30 @@ int main()
     window.fillPpmFile("./task1&2.ppm");
 
     //task 3
-    //Hollow pyramid, the green triangle should not be seen
+    //Hollow, doublesided pyramid, moving the camera so it seems the pyramid is revolving around the x axis
     int i = 0;
     debugCamera = Cameraf(origin, Matrix3f ());
     projectRays(vectorArray, window, debugCamera);
     triangleArray = {
         { { {-2, -1, -3 }, {2, -1, -2.75}, {0, 2, -3.75} }, 0xff0000 },
+        { { {2, -1, -2.75}, {-2, -1, -3 }, {0, 2, -3.75} }, 0xff0000 },
         { { {2, -1, -2.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x5500ff },
+        { { {2.75, -0.25, -4.5}, {2, -1, -2.75 }, {0, 2, -3.75} }, 0x5500ff },
         { { {-2.75, -0.25, -4.75 }, {2.75, -0.25, -4.5}, {0, 2, -3.75} }, 0x00ff00 },
+        { { {2.75, -0.25, -4.5}, {-2.75, -0.25, -4.75 }, {0, 2, -3.75} }, 0x00ff00 },
         { { {-2.75, -0.25, -4.75 }, {-2, -1, -3 }, {0, 2, -3.75} }, 0x777777 },
+        { { {-2, -1, -3 }, {-2.75, -0.25, -4.75 }, {0, 2, -3.75} }, 0x777777 },
     };
     debugCamera.truck({0,0,2});
+    float degrees = 20;
+    float rads = degrees * (M_PI / 180.0);
+    float movement = calcMovement(5.75, rads);
     do{
-        repositionRays(vectorArray, debugCamera);
         Vector3f position = debugCamera.getPosition();
+        if(i==18){
+            debugCamera = Cameraf(position, Matrix3f ());
+        }
+        projectRays(vectorArray, window, debugCamera);
         //sorting, so that the most distanced triangles will be rendered first
         std::sort(triangleArray.begin(), triangleArray.end(), [position](const TriangleAndColor& A, const TriangleAndColor& B){
                 return ( A.triangle.calculateDistanceFromVertexOriginToPlane(position) < B.triangle.calculateDistanceFromVertexOriginToPlane(position) );
@@ -105,10 +113,12 @@ int main()
         renderTriangles(vectorArray, window, position, triangleArray);
         std::string filename = "./complexShape"+std::to_string(i)+".ppm";
         window.fillPpmFile(filename);
-
-        debugCamera.tilt(4);
-        debugCamera.truck({0,-1,0});
+        {
+            debugCamera.tilt(degrees/2);
+            debugCamera.truck({0,-movement,0});
+            debugCamera.tilt(degrees/2);
+        }
         ++i;
-    }while(i<10);
+    }while(i<=360/degrees);
     return 0;
 }

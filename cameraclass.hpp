@@ -2,13 +2,18 @@
 #define CAMERACLASS_HPP
 
 #include <cmath>
+#include <vector>
 #include "vectorclass.hpp"
 #include "matrixclass.hpp"
 
 template<typename T>
 class Camera {
 public:
-    Camera (const Vector3<T>& pos, const Matrix3<T>& matrix) : position(pos), rotationMatrix(matrix) {}
+    //constructor
+    Camera (const Vector3<T>& pos, const Matrix3<T>& matrix, const uint32_t& screenWidth, const uint32_t& screenHight) :
+        position(pos), rotationMatrix(matrix),
+        vectorArray(screenHight, std::vector<Vector3<T>>(screenWidth)) {}
+    //Camera movement
     void truck(const Vector3<T>& moveDirection) {
         position = position + (moveDirection * rotationMatrix);
     }
@@ -44,6 +49,8 @@ private:
     Vector3<T> position;
     //rotation matrix
     Matrix3<T> rotationMatrix;
+    //vector matrix
+    std::vector<std::vector<Vector3<T>>> vectorArray;
 };
 
 using Cameraf = Camera<float>;

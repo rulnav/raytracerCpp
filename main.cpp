@@ -70,7 +70,7 @@ int main()
     Vector3f origin (0.0,0.0,0.0);
     std::vector<TriangleAndColor> triangleArray;
     window.fillPixelMatrix(0x00ff00);
-    Cameraf debugCamera(origin, Matrix3f ());
+    Cameraf debugCamera(origin, Matrix3f (), pixelMatrixWidth_g, pixelMatrixHight_g);
 
     //tasks 1 and 2
     debugCamera.truck({0,0,4});
@@ -83,7 +83,7 @@ int main()
     //task 3
     //Hollow, doublesided pyramid, moving the camera so it seems the pyramid is revolving around the x axis
     int i = 0;
-    debugCamera = Cameraf(origin, Matrix3f ());
+    debugCamera = Cameraf(origin, Matrix3f (), pixelMatrixWidth_g, pixelMatrixHight_g);
     projectRays(vectorArray, window, debugCamera);
     triangleArray = {
         { { {-2, -1, -3 }, {2, -1, -2.75}, {0, 2, -3.75} }, 0xff0000 },
@@ -102,7 +102,7 @@ int main()
     do{
         Vector3f position = debugCamera.getPosition();
         if(i==18){
-            debugCamera = Cameraf(position, Matrix3f ());
+            debugCamera = Cameraf(position, Matrix3f (), pixelMatrixWidth_g, pixelMatrixHight_g);
         }
         projectRays(vectorArray, window, debugCamera);
         //sorting, so that the most distanced triangles will be rendered first

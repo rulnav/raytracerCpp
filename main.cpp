@@ -9,6 +9,7 @@
 #include "vectorclass.hpp"
 #include "pixelarray.hpp"
 #include "triangleclass.hpp"
+#include "rendererclass.hpp"
 
 const uint32_t pixelMatrixHight_g = 400;
 const uint32_t pixelMatrixWidth_g = 600;

@@ -48,16 +48,18 @@ private:
             for(uint32_t j = 0; j < pixelMatrixWidth; ++j){
                 //check if the point, at which the ray intersects the triangle's plane is within the triangle
                 Vector3<T> intersectingRay;
-                T shortestIntersectingRayLength;
-                T intersectingRayLength;
+                T shortestIntersectingRayLengthSquared;
+                T intersectingRayLengthSquared;
                 Pixel closestTriangleColor;
                 bool firstHit = false;
                 for(auto& triangleAndColor : trianglesAndColors){
                     if(triangleAndColor.triangle.rayIntersectsTriangle(camera.getPosition(), vectorArray[i][j], intersectingRay)) {
-                        intersectingRayLength = intersectingRay.calculateLength();
-                        if ( (intersectingRayLength < shortestIntersectingRayLength) || !firstHit){
+                        //using dot product to get the length of the vector, which intersects a given triangle, squared
+                        //then, simply compare to get the closest triangle
+                        intersectingRayLengthSquared = dotProduct(intersectingRay, intersectingRay);
+                        if ( (intersectingRayLengthSquared < shortestIntersectingRayLengthSquared) || !firstHit){
                             firstHit = true;
-                            shortestIntersectingRayLength = intersectingRayLength;
+                            shortestIntersectingRayLengthSquared = intersectingRayLengthSquared;
                             closestTriangleColor = triangleAndColor.color;
                         }
                     }

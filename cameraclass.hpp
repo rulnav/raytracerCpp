@@ -42,8 +42,8 @@ public:
                       {0.0  	 , 0.0    	  , 1.0 }}});
     }
     //getters
-    Matrix3<T> getRotationMatrix(){  return rotationMatrix;  }
-    Vector3<T> getPosition(){  return position;  }
+    Matrix3<T> getRotationMatrix() const {  return rotationMatrix;  }
+    Vector3<T> getPosition() const {  return position;  }
 private:
     //camera position
     Vector3<T> position;

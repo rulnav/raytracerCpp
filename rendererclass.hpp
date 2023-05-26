@@ -47,11 +47,22 @@ private:
         for(uint32_t i = 0; i < pixelMatrixHight; ++i){
             for(uint32_t j = 0; j < pixelMatrixWidth; ++j){
                 //check if the point, at which the ray intersects the triangle's plane is within the triangle
+                Vector3<T> intersectingRay;
+                T shortestIntersectingRayLength;
+                T intersectingRayLength;
+                Pixel closestTriangleColor;
+                bool firstHit = false;
                 for(auto& triangleAndColor : trianglesAndColors){
-                    if(triangleAndColor.triangle.rayIntersectsTriangle(camera.getPosition(), vectorArray[i][j])) {
-                        window.setPixel(j, i, triangleAndColor.color);
+                    if(triangleAndColor.triangle.rayIntersectsTriangle(camera.getPosition(), vectorArray[i][j], intersectingRay)) {
+                        intersectingRayLength = intersectingRay.calculateLength();
+                        if ( (intersectingRayLength < shortestIntersectingRayLength) || !firstHit){
+                            firstHit = true;
+                            shortestIntersectingRayLength = intersectingRayLength;
+                            closestTriangleColor = triangleAndColor.color;
+                        }
                     }
                 }
+                if(firstHit) window.setPixel(j, i, closestTriangleColor);
             }
         }
     }

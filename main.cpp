@@ -32,7 +32,6 @@ int main()
 
     //tasks 1 and 2
     debugCamera.truck({0,0,4});
-    //debugCamera.pan(15.0);
     debugCamera.tilt(-30);
     pixelMatrix.render(debugCamera, { { {{-1.75, -1.75, -3}, {1.75, -1.75, -3}, {0, 1.75, -3}}, 0xff00ff } } );
     pixelMatrix.window.fillPpmFile("./task1&2.ppm");
@@ -51,7 +50,6 @@ int main()
         { { {-2.75, -0.25, -4.75 }, {-2, -1, -3 }, {0, 2, -3.75} }, 0x777777 },
         { { {-2, -1, -3 }, {-2.75, -0.25, -4.75 }, {0, 2, -3.75} }, 0x777777 },
     };
-//    projectRays(vectorArray, window, debugCamera);
     pixelMatrix.render(debugCamera, triangleArray);
     debugCamera.truck({0,0,2});
     float degrees = 20;
@@ -62,13 +60,7 @@ int main()
         if(i==18){
             debugCamera = Cameraf(position, Matrix3f (), pixelMatrixWidth_g, pixelMatrixHight_g);
         }
-//        projectRays(vectorArray, window, debugCamera);
-        //sorting, so that the most distanced triangles will be rendered first
-        std::sort(triangleArray.begin(), triangleArray.end(), [position](const TriangleAndColorF& A, const TriangleAndColorF& B){
-                return ( A.triangle.calculateDistanceFromVertexOriginToPlane(position) < B.triangle.calculateDistanceFromVertexOriginToPlane(position) );
-                });
         pixelMatrix.window.fillPixelMatrix(0xffffff);
-//        renderTriangles(vectorArray, window, position, triangleArray);
         pixelMatrix.render(debugCamera, triangleArray);
         std::string filename = "./complexShape"+std::to_string(i)+".ppm";
         pixelMatrix.window.fillPpmFile(filename);

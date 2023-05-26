@@ -18,7 +18,7 @@ public:
         return calculateNormalOfPlane().calculateLength() / 2;
     }
 
-    bool rayIntersectsTriangle(const Vector3<T>& rayOrigin, const Vector3<T>& rayDirection) const{
+    bool rayIntersectsTriangle(const Vector3<T>& rayOrigin, const Vector3<T>& rayDirection, Vector3<T>& intersectingRay ) const{
         //check if ray is parallel to triangle
         T projectionOfRayDirectionOntoNormalOfPlane = dotProduct(normalOfPlane, rayDirection);
         if(projectionOfRayDirectionOntoNormalOfPlane == 0)  {
@@ -30,7 +30,7 @@ public:
             return false;
         }
         int dirRayLen = 1;  //rayDirection.calculateLength(); //should be one, if we assume rayDirection is normalized
-        Vector3<T> intersectingRay =  rayOrigin + Vector3<T>( rayDirection * Vector3<T>(dirRayLen * distanceFromOriginToPlane / projectionOfRayDirectionOntoNormalOfPlane ));
+        intersectingRay =  rayOrigin + Vector3<T>( rayDirection * Vector3<T>(dirRayLen * distanceFromOriginToPlane / projectionOfRayDirectionOntoNormalOfPlane ));
         Vector3<T> v1ToIntersectionPoint = intersectingRay - vertex1;
         if(dotProduct(normalOfPlane, crossProduct(edge1, v1ToIntersectionPoint)) <= 0){
             return false;
